@@ -395,14 +395,16 @@
 ;---------------------------QUESTION 3.1-----------------------
 ;Solves a rubiks cube using breadth first search. Can solve up to roughly 7 moves.
 (define (solveCube solved initial n)
-    (define statesList (genStates n initial (list)))
-    (define solution (listSearcher (car (genStates n initial (list))) (car (cdr (genStates n initial (list))))  solved))
-    (if (null? solution)
-        (if (= n 7)
-        (list)
-        (solveCube solved initial (+ n 1))
+    (let ([statesList (genStates n initial (list))])
+        (let ([solution (listSearcher (car statesList) (car (cdr statesList))  solved)])
+            (if (null? solution)
+                (if (= n 7)
+                    (list)
+                    (solveCube solved initial (+ n 1))
+                )
+                solution
+            )
         )
-        solution
     )
 )
 (define (listSearcher stateList moveList solved)
