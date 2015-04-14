@@ -10,6 +10,7 @@
 \usepackage{graphicx}
 \usepackage{amsfonts}
 \usepackage{amsmath}
+\usepackage{float}
 \begin{document}
 
 \maketitle
@@ -24,25 +25,25 @@ The Rubik's cube can be twisted in six directions. For each state six new (non-d
 \section*{Question 3.2}
 Figure \ref{fig:memory_usage} indicates that there is a correlation between the running time and the memory usage. As \(n\) increases, so does the size of the search space grow exponentially. However, in terms of actually memory usage on the operating system we do not see this exponential growth, we instead see a logarithmic increase in memory usage of the process over the run duration.
 % Memory Usage Image
-\begin{figure}[tbph]
+\begin{figure}[H]
 \centering
-%\includegraphics[width=1\linewidth]{}
-\caption{Placeholder}
+\includegraphics[width=1\linewidth]{memory_usage.jpg}
+\caption{Memory Usage Over Time}
 \label{fig:memory_usage}
 \end{figure}
-\begin{table}[h]
+\begin{table}[H]
 \begin{center}
 	\begin{tabular}{|r|c|l|}
 		\hline
-		Size of \(n\)&Peak Memory Usage&Running Time\\
+		Size of \(n\)&Peak Memory Usage (MB)&Running Time (Seconds)\\
 		\hline
-		1&null&null\\
-		2&null&null\\
-		3&null&null\\
-		4&null&null\\
-		5&null&null\\
-		6&null&null\\
-		7&null&null\\
+		1&n/a&0.047\\
+		2&n/a&0.049\\
+		3&n/a&0.055\\
+		4&n/a&0.098\\
+		5&n/a&0.355\\
+		6&53.9&7.034\\
+		7&273.2&213.197\\
 		8&null&null\\
 		\hline
 		

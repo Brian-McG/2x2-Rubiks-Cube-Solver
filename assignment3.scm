@@ -604,9 +604,8 @@
 
 ; Populates a buildUpList and buildUpMove list at a single depth
 (define (buildUpOptimised stateList moveList currentIndex totalIndex buildUpList buildUpMove)
-    (let ([successorStates (generateOptimisedSuccessorStates (car stateList) (car moveList))])
+    (define successorStates (generateOptimisedSuccessorStates (car stateList) (car moveList)))
         (OptimisedBuildListController (cdr stateList) (cdr moveList) currentIndex totalIndex (append buildUpList (car successorStates)) (append buildUpMove (car (cdr successorStates))))
-    )
 )
 
 ;;  Behaves correctly for depth 0
@@ -688,7 +687,7 @@
     (let ([statesList (genStatesOptimised n initial (list))])
         (let ([solution (listSearcher (car statesList) (car (cdr statesList))  solved)])
             (if (null? solution)
-                (if (= n 7)
+                (if (= n 9)
                     (list)
                     (solveCube solved initial (+ n 1))
                 )
