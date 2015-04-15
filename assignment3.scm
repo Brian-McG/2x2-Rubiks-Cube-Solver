@@ -481,20 +481,20 @@
     (if (= currentIndex totalIndex)
          (list stateList moveList)
          (cond
-            [(not (null? stateList))
-                (buildUp stateList moveList currentIndex totalIndex buildUpList buildUpMove)
+            [(null? stateList)
+				(buildListController buildUpList buildUpMove (+ currentIndex 1) totalIndex (list) (list))
             ]
-            [else (buildListController buildUpList buildUpMove (+ currentIndex 1) totalIndex (list) (list))]
+            [else (buildUp stateList moveList currentIndex totalIndex buildUpList buildUpMove)]
          )
     )
 )
 
 ; Populates a buildUpList and buildUpMove list at a single depth
 (define (buildUp stateList moveList currentIndex totalIndex buildUpList buildUpMove)
-    (let ([successorStates (generateSuccessorStates (car stateList) (car moveList))])
+    (define successorStates (generateSuccessorStates (car stateList) (car moveList)))
         (buildListController (cdr stateList) (cdr moveList) currentIndex totalIndex (append buildUpList (car successorStates)) (append buildUpMove (car (cdr successorStates))))
-    )
 )
+
 
 ;;  Behaves correctly for depth 0
 ;;  (print (equal? (genStates 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
@@ -579,10 +579,52 @@
 ;;      )
 ;;  "\n")
 ;;  
+(define (genStatesOptimised n state moves)
+    (cond
+        [(<= n 0) (list (list state) (list moves))]
+        [(= n 1) (generateOptimisedSuccessorStates state moves)]
+        [(> n 1)
+            (let ((successorStatesSolns (generateOptimisedSuccessorStates state moves)))
+                (let ((newStates (car successorStatesSolns)) (newMoves (car (cdr successorStatesSolns))))
+                    (if (= (length newStates) 6)
+                        (let 
+                            (
+                                (nextxSolution (genStatesOptimised (- n 1) (list-ref newStates 0) (list-ref newMoves 0)))
+                                (nextXSolution (genStatesOptimised (- n 1) (list-ref newStates 1) (list-ref newMoves 1)))
+                                (nextySolution (genStatesOptimised (- n 1) (list-ref newStates 2) (list-ref newMoves 2)))
+                                (nextYSolution (genStatesOptimised (- n 1) (list-ref newStates 3) (list-ref newMoves 3)))
+                                (nextzSolution (genStatesOptimised (- n 1) (list-ref newStates 4) (list-ref newMoves 4)))
+                                (nextZSolution (genStatesOptimised (- n 1) (list-ref newStates 5) (list-ref newMoves 5)))
+                            )
+                            (list
+                                (append '() (car nextxSolution) (car nextXSolution) (car nextySolution) (car nextYSolution) (car nextzSolution) (car nextZSolution))
+                                (append '() (car (cdr nextxSolution)) (car (cdr nextXSolution)) (car (cdr nextySolution)) (car (cdr nextYSolution)) (car (cdr nextzSolution)) (car (cdr nextZSolution)))
+                            )
+                        )
+                        (let
+                             (
+                                 (sol1 (genStatesOptimised (- n 1) (list-ref newStates 0) (list-ref newMoves 0)))
+                                 (sol2 (genStatesOptimised (- n 1) (list-ref newStates 1) (list-ref newMoves 1)))
+                                 (sol3 (genStatesOptimised (- n 1) (list-ref newStates 2) (list-ref newMoves 2)))
+                                 (sol4 (genStatesOptimised (- n 1) (list-ref newStates 3) (list-ref newMoves 3)))
+                                 (sol5 (genStatesOptimised (- n 1) (list-ref newStates 4) (list-ref newMoves 4)))
+                             )
+                             (list
+                                 (append '() (car sol1) (car sol2) (car sol3) (car sol4) (car sol5))
+                                 (append '() (car (cdr sol1)) (car (cdr sol2)) (car (cdr sol3)) (car (cdr sol4)) (car (cdr sol5)))
+                             )
+                         )
+                    )
+                )
+            )  
+        
+        ]
+    )
+)
 
 
 ;finds all the states at a specific depth using generateOptimisedSuccessorStates
-(define (genStatesOptimised n state moves)
+(define (genStatesOptimisedTailRecursive n state moves)
      (if (= n 0)
         (list (list state) (list moves))
         (OptimisedBuildListController (list state) (list moves) 0 n (list) (list))
@@ -602,11 +644,13 @@
     )
 )
 
-; Populates a buildUpList and buildUpMove list at a single depth
 (define (buildUpOptimised stateList moveList currentIndex totalIndex buildUpList buildUpMove)
     (define successorStates (generateOptimisedSuccessorStates (car stateList) (car moveList)))
         (OptimisedBuildListController (cdr stateList) (cdr moveList) currentIndex totalIndex (append buildUpList (car successorStates)) (append buildUpMove (car (cdr successorStates))))
 )
+
+; Populates a buildUpList and buildUpMove list at a single depth
+
 
 ;;  Behaves correctly for depth 0
 ;;  (print (equal? (genStatesOptimised 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
@@ -707,6 +751,32 @@
         )
     )
 )
+
+ (define (solveCubeSafe solved initial n)
+     (let ([statesList (genStatesOptimisedTailRecursive n initial (list))])
+         (let ([solution (listSearcher (car statesList) (car (cdr statesList))  solved)])
+             (if (null? solution)
+                 (if (= n 9)
+                     (list)
+                     (solveCubeSafe solved initial (+ n 1))
+                 )
+                 solution
+             )
+         )
+     )
+ )
+
+ ; Searches provided stateList looking for a solvedState
+ (define (listSearcherSafe stateList moveList solved)
+     (if (or (null? stateList) (null? moveList))
+         (list)
+         (if (boolean? (member (car stateList) solved))
+             (listSearcher (cdr stateList) (cdr moveList) solved)
+             (car moveList)
+         )
+     )
+ )
+
 ;---------------------------------------------------------------------
 ;TESTS
 ; (print (equal? '("Z" "Y" "X") (solveCube solvedStates (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
