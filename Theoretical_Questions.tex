@@ -32,7 +32,7 @@ Tests were conducted for \(n\) up to size 8.
 The following function was used to test completion time and memory allocation\begin{equation*}\begin{split}
 cubeSolve(rotationString) = \text{(time (solveCube solvedStates (rotate }rotationString \\\text{ '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0))}
 \end{split}\end{equation*}
-The rotation string used for \(n = 8\) was "xyzXYZxy", for \(n = 7\) was "xyzXYZx" etc.\newline\newline The memory allocated would appear to be the memory allocated during the runtime not the total memory used at a particular time. It should be pointed out that this testing used the rotation optimisation outlined in Question 4. Secondly, to get faster completion time a non-tail recursive genStates method was used. Two implementations of genStates were written, one was tail recursive (completed slower) and the other was not tail recursive (completed faster). For comparison at a size \(n = 7\), solveCube with non-tail recursive genStates completed in 15 seconds with a peak memory usage of 740 MB. The solveCube with tail recursive genStates completed in 240 seconds with a peak memory usage of 273 MB. The non-tail recursive genStates was selected since the assignment brief outlined that it should be able to solve cubes of 7 moves or less. The memory usage only becomes a concern from at least 8 moves from which the tail recursive genStates would have to be used.
+The rotation string used for \(n = 8\) was "xyzXYZxy", for \(n = 7\) was "xyzXYZx" etc.\newline\newline The memory allocated would appear to be the memory allocated during the runtime not the total memory used at a particular time. To get faster completion time a non-tail recursive genStates method was used. Two implementations of genStates were written, one was tail recursive (completed slower) and the other was not tail recursive (completed faster). For comparison at a size \(n = 7\), solveCube with non-tail recursive genStates completed in 15 seconds with a peak memory usage of 740 MB. The solveCube with tail recursive genStates completed in 240 seconds with a peak memory usage of 273 MB. The non-tail recursive genStates was selected since the assignment brief outlined that it should be able to solve cubes of 7 moves or less. The memory usage only becomes a concern from at least 8 moves from which the tail recursive genStates would have to be used.
 \subsubsection{Results Obtained}
 \begin{table}[H]
 \begin{center}
@@ -58,8 +58,8 @@ The rotation string used for \(n = 8\) was "xyzXYZxy", for \(n = 7\) was "xyzXYZ
  
  \subsection{Memory Usage During Runtime}
  \subsubsection{Testing Methodology}
- The \(cubeSolve\) function defined above was used with \(rotationString\) for \(n = 7\). Process Explorer was used to track the memory usage during program execution. This could be as a result of the genStates method not being tail recursive as the fact that the search space is expanding by a multiple of 5 as the depth increases.
- \subsubsection*{Results Obtained}
+ The \(cubeSolve\) function defined above was used with the \(rotationString\) for \(n = 7\). Process Explorer was used to track the memory usage during program execution. This could be as a result of the genStates method not being tail recursive and the fact that the search space is expanding by a multiple of 5 as the depth increases.
+ \subsubsection{Results Obtained}
  
  % Memory Usage Image
  \begin{figure}[H]
@@ -68,24 +68,21 @@ The rotation string used for \(n = 8\) was "xyzXYZxy", for \(n = 7\) was "xyzXYZ
  	\caption{Memory Usage Over Time (Non-Tail Recursive genStates)}
  	\label{fig:memory_usage}
  \end{figure}
+ 
   \begin{figure}[H]
   	\centering
+  	\noindent\makebox[\textwidth]{
   	\includegraphics[width=1.2\linewidth]{mem_usage3.jpg}
+  }
   	\caption{Memory Usage Over Time (Tail Recursive genStates)}
   	\label{fig:memory_usageTail}
   \end{figure}
+
  Figure \ref{fig:memory_usage} shows a linear increase in memory usage as the program executes. Figure \ref{fig:memory_usageTail} shows a logarithmic increase in memory usage as the program executes. The tail recursive genStates is much more memory efficient that the tail recursive genStates. The length of the graph indicates that the solveCube using tail recursive genStates is much slower than than using the non-tail recursive genState. 
 
 \section{Optimise algorithm and calculate reduction in number of states (Question 4)}
-\subsection{Optimised function and number of states for \(n = 10\)}
-Using function \ref{func_states}, the number of states that can be generated from 10 moves where 6 possible rotations can be made for each state is:
-\begin{equation*}
-\begin{split}
-  f(10) & = 6^{10} \\
-		  & = 60466176\text{ states}
-\end{split}
-\end{equation*}								
-Function \ref{func_states} can be optimised such that from a given non-initial state, the new states generated are only those that will not undo the last move.
+\subsection{Optimised function}							
+Function \ref{func_states} can be optimised such that from a given state, the new states generated are only those that will not undo the last move.
 \begin{equation}
 \begin{split}
 g(n) =
@@ -97,6 +94,14 @@ g(n) =
 \end{split}
 \label{fun:func_states_optimised}
 \end{equation}
+\subsection{Number of states for \(n = 10\)}
+Using function \ref{func_states}, the number of states that can be generated from 10 moves where 6 possible rotations can be made for each state is:
+\begin{equation*}
+\begin{split}
+f(10) & = 6^{10} \\
+& = 60466176\text{ states}
+\end{split}
+\end{equation*}	
 Using function \ref{fun:func_states_optimised} the number of states generated from 10 moves is:
 \begin{equation*}
 \begin{split}
@@ -126,4 +131,9 @@ It follows that function \ref{fun:func_states_optimised} produces 48747426 (80.6
 		\end{tabular}}\caption{Memory usage and completion time for different size of \(n\)}\end{center}
 	\label{table:mem_usage}
 \end{table}
+\section{Conclusions}
+\subsection{Exponential relation between \(n\) and completion time}
+As \(n\) increases so does the the completion time and memory allocation increase exponentially. The non-tail recursive genStates uses memory much more aggressively than the non-tail recursive genStates method.
+\subsection{Major improvement when ignoring undo moves}
+Ignoring rotations that will undo last move dramatically reduces the number of states that have to be generated at \(n = 10\). For \(n = 8\) a 66.9\% reduction in completion time was obtained. It is a big performance improvement for relatively little work.
 \end{document}
