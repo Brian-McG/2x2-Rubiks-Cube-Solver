@@ -760,7 +760,7 @@
             [(not (null? stateList))
                 (buildUpOptimised stateList moveList currentIndex totalIndex buildUpList buildUpMove)
             ]
-            [else (OptimisedBuildListController buildUpList buildUpMove (+ currentIndex 1) totalIndex (list) (list))]
+            [else (optimisedBuildListController buildUpList buildUpMove (+ currentIndex 1) totalIndex (list) (list))]
          )
     )
 )
@@ -910,5 +910,22 @@
  )
 ;; ;(print (equal? '("Z" "Y" "X") (solveCubeSafe solvedStates (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
 ;; ;(print (equal? '("X") (solveCubeSafe solvedStates (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
+
+(define (solveCubeSlow solved initial n)
+    (let ([statesList (genStates n initial (list))])
+        (let ([solution (listSearcher (car statesList) (car (cdr statesList))  solved)])
+            (if (null? solution)
+                (if (= n 9)
+                    (list)
+                    (solveCubeSlow solved initial (+ n 1))
+                )
+                solution
+            )
+        )
+    )
+)
+;; ;(print (equal? '("Z" "Y" "X") (solveCubeSlow solvedStates (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
+;; ;(print (equal? '("X") (solveCubeSlow solvedStates (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
+
 
 ;---------------------------------------------------------------------
