@@ -5,14 +5,14 @@ Functional Programming: Assignment 1
 ----------
 ### Important Notices
 #### Variations of generateSuccessorStates
-- 2 variations of *generateSuccessorStates* were created:
+- 2 variations of generateSuccessorStates were created:
   - *generateSuccessorStates*
   - *generateOptimisedSuccessorStates*
 - *generateSuccessorStates* produces the values expected by the auto-marker and the provided unit tests.
 - *generateOptimisedSuccessorStates* implements the optimisation mentioned in Question 4 whereby rotations that undo the last move are ignored.
 
 #### Variations of genStates
-- 3 variations of *genStates* were created:
+- 3 variations of genStates were created:
   -  *genStates*
   - *genStatesOptimised*
   - *genStatesOptimisedTailRecursive*
@@ -21,7 +21,7 @@ Functional Programming: Assignment 1
 - *genStatesOptimisedTailRecursive* is *genStates* that uses *generateOptimisedSuccessorStates* instead of *generateSuccessorStates*.
 
 #### Variations of solveCube
-- 3 variations of *solveCube* were created:
+- 3 variations of solveCube were created:
   - *solveCube*
   - *solveCubeSafe*
   - *solveCubeSlow*
