@@ -175,7 +175,6 @@
  
     )
 )
-;; ;TESTS
 ;; ; (print (= 2 (recalculateOrientation 1 0)) "\n")
 ;; ; (print (= 5 (recalculateOrientation 5 0)) "\n")
 ;; ; (print (= 1 (recalculateOrientation 1 1)) "\n")
@@ -184,14 +183,7 @@
 ;; ; (print (= 2 (recalculateOrientation 2 2)) "\n")
 
 ;rotations are performed using the left hand rule
-;rotates left 4 cubes along x axis
-(define (rotateX ispositive state)
-	(if ispositive
-        (list (rotateXPos 0 state (list)) (list "x"))
-        (list (rotateXNeg 0 state (list)) (list "X"))
-    )
-)
-
+; Rotates list in the positive x direction
 (define (rotateXPos indexVal lst buildUpList) 
     (if(null? (index lst indexVal))
 	    buildUpList
@@ -204,7 +196,10 @@
 		)
 	)
 )
+;; ; (print (equal? (rotateXPos 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '()) '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3))) "\n")
+;; ; (print (equal? (rotateXPos 0 '((5 5) (1 6) (7 5) (4 1) (2 4) (8 3) (3 2) (6 2)) '()) '((2 1) (1 6) (5 5) (4 1) (3 3) (8 3) (7 5) (6 2))) "\n")
 
+; Rotates list in the negative x direction
 (define (rotateXNeg indexVal lst buildUpList) 
     (if(null? (index lst indexVal))
 	    buildUpList
@@ -217,7 +212,10 @@
 		)
 	)
 )
+;; ;(print (equal? (rotateXNeg 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '()) '((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3))) "\n")
+;; ;(print (equal? (rotateXNeg 0 '((5 5) (1 6) (7 5) (4 1) (2 4) (8 3) (3 2) (6 2)) '()) '((7 5) (1 6) (3 1) (4 1) (5 5) (8 3) (2 3) (6 2))) "\n")
 
+; Rotates list in the positive y direction
 (define (rotateYPos indexVal lst buildUpList) 
     (if(null? (index lst indexVal))
 	    buildUpList
@@ -230,7 +228,10 @@
 		)
 	)
 )
+;; ;(print (equal? (rotateYPos 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '()) '((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3))) "\n")
+;; ;(print (equal? (rotateYPos 0 '((5 5) (1 6) (7 5) (4 1) (2 4) (8 3) (3 2) (6 2)) '()) '((5 5) (1 6) (7 5) (4 1) (8 3) (6 6) (2 5) (3 6))) "\n")
 
+; Rotates list in the negative y direction
 (define (rotateYNeg indexVal lst buildUpList) 
     (if(null? (index lst indexVal))
 	    buildUpList
@@ -243,7 +244,10 @@
 		)
 	)
 )
+;  (print (equal? (rotateYNeg 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '()) '((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3))) "\n")
+;  (print (equal? (rotateYNeg 0 '((5 5) (1 6) (7 5) (4 1) (2 4) (8 3) (3 2) (6 2)) '()) '((5 5) (1 6) (7 5) (4 1) (3 5) (2 6) (6 5) (8 3))) "\n")
 
+; Rotates list in the positive z direction
 (define (rotateZPos indexVal lst buildUpList) 
     (if(null? (index lst indexVal))
 	    buildUpList
@@ -256,7 +260,10 @@
 		)
 	)
 )
+;; ; (print (equal? (rotateZPos 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '()) '((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3))) "\n")
+;; ; (print (equal? (rotateZPos 0 '((5 5) (1 6) (7 5) (4 1) (2 4) (8 3) (3 2) (6 2)) '()) '((1 1) (8 6) (7 5) (4 1) (5 3) (2 4) (3 2) (6 2))) "\n")
 
+; Rotates list in the negative z direction
 (define (rotateZNeg indexVal lst buildUpList) 
     (if(null? (index lst indexVal))
 	    buildUpList
@@ -269,11 +276,25 @@
 		)
 	)
 )
-
-
+;; ;(print (equal? (rotateYNeg 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '()) '((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3))) "\n")
+;; ;(print (equal? (rotateYNeg 0 '((5 5) (1 6) (7 5) (4 1) (2 4) (8 3) (3 2) (6 2)) '()) '((5 5) (1 6) (7 5) (4 1) (3 5) (2 6) (6 5) (8 3))) "\n")
+ 
+; Skeleton code defined helper method
 (define(createPair miniList axis)
 	(list (car miniList) (recalculateOrientation (car (cdr miniList)) axis))
 )
+
+;rotates left 4 cubes along x axis
+ (define (rotateX ispositive state)
+     (if ispositive
+         (list (rotateXPos 0 state (list)) (list "x"))
+         (list (rotateXNeg 0 state (list)) (list "X"))
+     )
+ )
+;; ;(print (equal? (rotateX #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) '(((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) ("x"))) "\n")
+;; ;(print (equal? (rotateX #t '((5 5) (1 6) (7 5) (4 1) (2 4) (8 3) (3 2) (6 2))) '(((2 1) (1 6) (5 5) (4 1) (3 3) (8 3) (7 5) (6 2)) ("x"))) "\n")
+;; ;(print (equal? (rotateX #f '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) '(((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3)) ("X"))) "\n")
+;; ;(print (equal? (rotateX #f '((5 5) (1 6) (7 5) (4 1) (2 4) (8 3) (3 2) (6 2))) '(((7 5) (1 6) (3 1) (4 1) (5 5) (8 3) (2 3) (6 2)) ("X"))) "\n")
 
 ;rotates bottom 4 cubes along y axis
 (define (rotateY ispositive state)
@@ -282,6 +303,10 @@
         (list (rotateYNeg 0 state (list)) (list "Y"))
     )
 )
+;; ;(print (equal? (rotateY #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) '(((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3)) ("y"))) "\n")
+;; ;(print (equal? (rotateY #t '((5 5) (1 6) (7 5) (4 1) (2 4) (8 3) (3 2) (6 2))) '(((5 5) (1 6) (7 5) (4 1) (8 3) (6 6) (2 5) (3 6)) ("y"))) "\n") 
+;; ;(print (equal? (rotateY #f '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) '(((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3)) ("Y"))) "\n")
+;; ;(print (equal? (rotateY #f '((5 5) (1 6) (7 5) (4 1) (2 4) (8 3) (3 2) (6 2))) '(((5 5) (1 6) (7 5) (4 1) (3 5) (2 6) (6 5) (8 3)) ("Y"))) "\n")
 
 ;rotates back 4 cubes along z axis
 (define (rotateZ ispositive state)
@@ -290,7 +315,10 @@
         (list (rotateZNeg 0 state (list)) (list "Z"))
     )
 )
-
+;; ; (print (equal? (rotateZ #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) '(((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3)) ("z"))) "\n")
+;; ; (print (equal? (rotateZ #t '((5 5) (1 6) (7 5) (4 1) (2 4) (8 3) (3 2) (6 2))) '(((1 1) (8 6) (7 5) (4 1) (5 3) (2 4) (3 2) (6 2)) ("z"))) "\n")
+;; ; (print (equal? (rotateZ #f '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) '(((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3)) ("Z"))) "\n")
+;; ; (print (equal? (rotateZ #f '((5 5) (1 6) (7 5) (4 1) (2 4) (8 3) (3 2) (6 2))) '(((2 4) (5 1) (7 5) (4 1) (8 5) (1 3) (3 2) (6 2)) ("Z"))) "\n")
 
 ;; ;helper for rotate function
 (define (rotateHelper char state)
@@ -311,16 +339,15 @@
         (rotate (substring rotations 1 (string-length rotations)) (rotateHelper (string-ref rotations 0) state))
     )
 )
-;; ;TESTS
 ;; ; (print (equal? (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (car (rotateX #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))))) "\n")
 ;; ; (print (equal? (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (car (rotateZ #t (car (rotateY #t (car (rotateX #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))))))))) "\n")
 ;; ; (print (equal? (rotate "xXx" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (car (rotateX #t (car (rotateX #f (car (rotateX #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))))))))) "\n")
 ;; ; (print (equal? (rotate "yXz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (car (rotateZ #t (car (rotateX #f (car (rotateY #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))))))))) "\n")
 ;; ; (print (not (equal? (rotate "xXy" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (car (rotateX #f (car (rotateZ #t '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)))))))) "\n")
-;; ;------------------------------------------------------------
 
 ;-----------------------QUESTION 1.2-----------------------
-;generates the successor states of the current given rubiks cube state
+; Generates the successor states of the current given rubiks cube state
+; Non-Optimised version - generates 6 new states each time it is called
 (define (generateSuccessorStates state prevMoves)
      (list
          (list
@@ -341,8 +368,7 @@
          )
      )
  )
-
-;; ;TESTS
+; generateSuccessorStates tests
 ;; ; (print (equal? (generateSuccessorStates '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
 ;; ;         (list
 ;; ;             (list
@@ -359,6 +385,7 @@
 ;; ; "\n")
 
 ; Generates successor state list that does not include rotations that undo last move
+; Optimised version - generates 5 states if prevMoves not empty or 6 states if it is empty
 (define (generateOptimisedSuccessorStates state prevMoves)
     (if (= (length prevMoves) 0)
         (generateSuccessorStates state prevMoves)  
@@ -369,6 +396,7 @@
 )
 
 ; Builds up a state list and move list recursively
+; Helper function for generateOptimisedSuccessorStates 
 (define (buildUpSuccessor buildUpStateList buildUpMoveList state moveList char lastMove)
     (cond
         [(char=? char #\x)
@@ -399,7 +427,7 @@
                  [else
                      (buildUpSuccessor (append buildUpStateList (list (rotate "y" state))) (append buildUpMoveList (list (append moveList '("y")))) state moveList #\Y lastMove)
                  ]
-            )
+             )
         ]
         [(char=? char #\Y)
             (cond
@@ -434,7 +462,7 @@
                                  
     )
 )
-
+; generateOptimisedSuccessorStates tests
 ;; ;It generates all states if previous moves is empty
 ;; ;(print (equal? (generateOptimisedSuccessorStates '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
 ;; ;        (list
@@ -463,12 +491,14 @@
 ;; ;            )
 ;; ;            '(("x" "y" "z" "x") ("x" "y" "z" "X") ("x" "y" "z" "y") ("x" "y" "z" "Y") ("x" "y" "z" "z"))
 ;; ;        )
-;; ;        )
+;; ;     )
 ;; ; "\n")
 
 ;-----------------------------QUESTION 2.1--------------------------
 
-;finds all the states at a specific depth
+;-----------------------------Non-Optimised (slow)--------------------------
+; finds all the states at a specific depth
+; Non-Optimised, tail recursive genStates method
 (define (genStates n state moves)
     (if (= n 0)
         (list (list state) (list moves))
@@ -477,6 +507,7 @@
 )
 
 ; Creates a list of states and moves up to 'n' depth
+; Helper function of genStates
 (define (buildListController stateList moveList currentIndex totalIndex buildUpList buildUpMove)
     (if (= currentIndex totalIndex)
          (list stateList moveList)
@@ -488,97 +519,114 @@
          )
     )
 )
+ ;  buildListController behaves correctly for n=1
+ ;; ;(print (equal? (buildListController (list '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (list '()) 0 1 (list) (list))
+ ;; ; '((((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3))
+;; ;  ((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3))
+ ;; ;  ((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3))
+ ;; ;  ((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3))
+ ;; ;  ((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3))
+ ;; ;  ((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3)))
+ ;; ; (("x") ("X") ("y") ("Y") ("z") ("Z")))
+ ;; ;      )
+ ;; ;  "\n")
+
 
 ; Populates a buildUpList and buildUpMove list at a single depth
+; Helper function of genStates
 (define (buildUp stateList moveList currentIndex totalIndex buildUpList buildUpMove)
     (define successorStates (generateSuccessorStates (car stateList) (car moveList)))
         (buildListController (cdr stateList) (cdr moveList) currentIndex totalIndex (append buildUpList (car successorStates)) (append buildUpMove (car (cdr successorStates))))
 )
+; Tests not provided for buildUp as genStates and buildListController tests will ensure that buildUp is performing correctly
 
+;  genStates Tests
+;; ;  Behaves correctly for depth 0
+;; ;  (print (equal? (genStates 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
+;; ;      '((((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (()))
+;; ;      )
+;; ;  "\n")
+;; ;
+;  Behaves correctly for depth 2
+;; ;  (print (equal? (genStates 2 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
+;; ;      '((((7 1) (2 1) (5 1) (4 1) (3 3) (6 3) (1 3) (8 3))
+;; ;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+;; ;         ((5 4) (2 1) (1 2) (4 1) (6 3) (8 3) (7 5) (3 6))
+;; ;         ((5 4) (2 1) (1 2) (4 1) (3 5) (7 6) (8 3) (6 3))
+;; ;         ((2 5) (6 6) (1 2) (4 1) (5 4) (7 4) (3 2) (8 3))
+;; ;         ((7 4) (5 4) (1 2) (4 1) (6 5) (2 6) (3 2) (8 3))
+;; ;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+;; ;         ((7 1) (2 1) (5 1) (4 1) (3 3) (6 3) (1 3) (8 3))
+;; ;         ((3 4) (2 1) (7 2) (4 1) (6 3) (8 3) (1 5) (5 6))
+;; ;         ((3 4) (2 1) (7 2) (4 1) (5 5) (1 6) (8 3) (6 3))
+;; ;         ((2 5) (6 6) (7 2) (4 1) (3 4) (1 4) (5 2) (8 3))
+;; ;         ((1 4) (3 4) (7 2) (4 1) (6 5) (2 6) (5 2) (8 3))
+;; ;         ((6 4) (2 1) (1 2) (4 1) (5 4) (8 3) (3 2) (7 3))
+;; ;         ((3 4) (2 1) (5 2) (4 1) (1 4) (8 3) (6 2) (7 3))
+;; ;         ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3))
+;; ;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+;; ;         ((2 5) (8 6) (3 1) (4 1) (1 5) (6 6) (5 3) (7 3))
+;; ;         ((6 5) (1 6) (3 1) (4 1) (8 5) (2 6) (5 3) (7 3))
+;; ;         ((7 4) (2 1) (1 2) (4 1) (8 4) (5 3) (3 2) (6 3))
+;; ;         ((3 4) (2 1) (8 2) (4 1) (1 4) (5 3) (7 2) (6 3))
+;; ;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+;; ;         ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3))
+;; ;         ((2 5) (5 6) (3 1) (4 1) (1 5) (7 6) (8 3) (6 3))
+;; ;         ((7 5) (1 6) (3 1) (4 1) (5 5) (2 6) (8 3) (6 3))
+;; ;         ((1 5) (6 6) (2 5) (4 1) (7 4) (5 6) (3 2) (8 3))
+;; ;         ((3 4) (6 6) (7 2) (4 1) (2 5) (5 6) (1 5) (8 3))
+;; ;         ((2 5) (6 6) (3 1) (4 1) (5 4) (8 3) (1 2) (7 3))
+;; ;         ((2 5) (6 6) (3 1) (4 1) (7 3) (1 4) (8 3) (5 2))
+;; ;         ((6 1) (5 1) (3 1) (4 1) (2 3) (1 3) (7 3) (8 3))
+;; ;        ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+;; ;        ((6 5) (1 6) (5 5) (4 1) (7 4) (2 6) (3 2) (8 3))
+;; ;        ((3 4) (1 6) (7 2) (4 1) (5 5) (2 6) (6 5) (8 3))
+;; ;        ((5 5) (1 6) (3 1) (4 1) (2 4) (8 3) (6 2) (7 3))
+;; ;        ((5 5) (1 6) (3 1) (4 1) (7 3) (6 4) (8 3) (2 2))
+;; ;        ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+;; ;        ((6 1) (5 1) (3 1) (4 1) (2 3) (1 3) (7 3) (8 3)))
+;; ;        (("x" "x")
+;; ;         ("x" "X")
+;; ;         ("x" "y")
+;; ;         ("x" "Y")
+;; ;         ("x" "z")
+;; ;         ("x" "Z")
+;; ;         ("X" "x")
+;; ;         ("X" "X")
+;; ;         ("X" "y")
+;; ;         ("X" "Y")
+;; ;         ("X" "z")
+;; ;         ("X" "Z")
+;; ;         ("y" "x")
+;; ;         ("y" "X")
+;; ;         ("y" "y")
+;; ;         ("y" "Y")
+;; ;         ("y" "z")
+;; ;         ("y" "Z")
+;; ;         ("Y" "x")
+;; ;         ("Y" "X")
+;; ;         ("Y" "y")
+;; ;         ("Y" "Y")
+;; ;         ("Y" "z")
+;; ;         ("Y" "Z")
+;; ;         ("z" "x")
+;; ;         ("z" "X")
+;; ;         ("z" "y")
+;; ;         ("z" "Y")
+;; ;         ("z" "z")
+;; ;         ("z" "Z")
+;; ;         ("Z" "x")
+;; ;         ("Z" "X")
+;; ;         ("Z" "y")
+;; ;         ("Z" "Y")
+;; ;         ("Z" "z")
+;; ;         ("Z" "Z")))    
+;; ;     )
+;; ; "\n")
 
-;;  Behaves correctly for depth 0
-;;  (print (equal? (genStates 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
-;;      '((((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (()))
-;;      )
-;;  "\n")
-;;
-;;  Behaves correctly for depth 2
-;;  (print (equal? (genStates 2 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
-;;      '((((7 1) (2 1) (5 1) (4 1) (3 3) (6 3) (1 3) (8 3))
-;;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-;;         ((5 4) (2 1) (1 2) (4 1) (6 3) (8 3) (7 5) (3 6))
-;;         ((5 4) (2 1) (1 2) (4 1) (3 5) (7 6) (8 3) (6 3))
-;;         ((2 5) (6 6) (1 2) (4 1) (5 4) (7 4) (3 2) (8 3))
-;;         ((7 4) (5 4) (1 2) (4 1) (6 5) (2 6) (3 2) (8 3))
-;;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-;;         ((7 1) (2 1) (5 1) (4 1) (3 3) (6 3) (1 3) (8 3))
-;;         ((3 4) (2 1) (7 2) (4 1) (6 3) (8 3) (1 5) (5 6))
-;;         ((3 4) (2 1) (7 2) (4 1) (5 5) (1 6) (8 3) (6 3))
-;;         ((2 5) (6 6) (7 2) (4 1) (3 4) (1 4) (5 2) (8 3))
-;;         ((1 4) (3 4) (7 2) (4 1) (6 5) (2 6) (5 2) (8 3))
-;;         ((6 4) (2 1) (1 2) (4 1) (5 4) (8 3) (3 2) (7 3))
-;;         ((3 4) (2 1) (5 2) (4 1) (1 4) (8 3) (6 2) (7 3))
-;;         ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3))
-;;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-;;         ((2 5) (8 6) (3 1) (4 1) (1 5) (6 6) (5 3) (7 3))
-;;         ((6 5) (1 6) (3 1) (4 1) (8 5) (2 6) (5 3) (7 3))
-;;         ((7 4) (2 1) (1 2) (4 1) (8 4) (5 3) (3 2) (6 3))
-;;         ((3 4) (2 1) (8 2) (4 1) (1 4) (5 3) (7 2) (6 3))
-;;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-;;         ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3))
-;;         ((2 5) (5 6) (3 1) (4 1) (1 5) (7 6) (8 3) (6 3))
-;;         ((7 5) (1 6) (3 1) (4 1) (5 5) (2 6) (8 3) (6 3))
-;;         ((1 5) (6 6) (2 5) (4 1) (7 4) (5 6) (3 2) (8 3))
-;;         ((3 4) (6 6) (7 2) (4 1) (2 5) (5 6) (1 5) (8 3))
-;;         ((2 5) (6 6) (3 1) (4 1) (5 4) (8 3) (1 2) (7 3))
-;;         ((2 5) (6 6) (3 1) (4 1) (7 3) (1 4) (8 3) (5 2))
-;;         ((6 1) (5 1) (3 1) (4 1) (2 3) (1 3) (7 3) (8 3))
-;;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-;;         ((6 5) (1 6) (5 5) (4 1) (7 4) (2 6) (3 2) (8 3))
-;;         ((3 4) (1 6) (7 2) (4 1) (5 5) (2 6) (6 5) (8 3))
-;;         ((5 5) (1 6) (3 1) (4 1) (2 4) (8 3) (6 2) (7 3))
-;;         ((5 5) (1 6) (3 1) (4 1) (7 3) (6 4) (8 3) (2 2))
-;;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-;;         ((6 1) (5 1) (3 1) (4 1) (2 3) (1 3) (7 3) (8 3)))
-;;         (("x" "x")
-;;          ("x" "X")
-;;          ("x" "y")
-;;          ("x" "Y")
-;;          ("x" "z")
-;;          ("x" "Z")
-;;          ("X" "x")
-;;          ("X" "X")
-;;          ("X" "y")
-;;          ("X" "Y")
-;;          ("X" "z")
-;;          ("X" "Z")
-;;          ("y" "x")
-;;          ("y" "X")
-;;          ("y" "y")
-;;          ("y" "Y")
-;;          ("y" "z")
-;;          ("y" "Z")
-;;          ("Y" "x")
-;;          ("Y" "X")
-;;          ("Y" "y")
-;;          ("Y" "Y")
-;;          ("Y" "z")
-;;          ("Y" "Z")
-;;          ("z" "x")
-;;          ("z" "X")
-;;          ("z" "y")
-;;          ("z" "Y")
-;;          ("z" "z")
-;;          ("z" "Z")
-;;          ("Z" "x")
-;;          ("Z" "X")
-;;          ("Z" "y")
-;;          ("Z" "Y")
-;;          ("Z" "z")
-;;          ("Z" "Z")))    
-;;      )
-;;  "\n")
-;;  
+;-----------------------------Ground up optimised genStates (fastest)--------------------------
+; This method is NOT tail recursive by design!
+; In trying to get the fastest solution, this way of doing it resulted in much much faster results (the theoretical questions has a comparision for n=7) at the expense of bit more memory usage
 (define (genStatesOptimised n state moves)
     (cond
         [(<= n 0) (list (list state) (list moves))]
@@ -621,18 +669,91 @@
         ]
     )
 )
+ ; genStatesOptimised Tests
+ ;  Behaves correctly for depth 0
+ ;;  (print (equal? (genStatesOptimised 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
+ ;;      '((((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (()))
+ ;;      )
+ ;;  "\n")
+ ;;
+ ;  Behaves correctly for depth 2
+ ;;  (print (equal? (genStatesOptimised 2 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
+ ;;      '((((7 1) (2 1) (5 1) (4 1) (3 3) (6 3) (1 3) (8 3))
+ ;;         ((5 4) (2 1) (1 2) (4 1) (6 3) (8 3) (7 5) (3 6))
+ ;;         ((5 4) (2 1) (1 2) (4 1) (3 5) (7 6) (8 3) (6 3))
+ ;;         ((2 5) (6 6) (1 2) (4 1) (5 4) (7 4) (3 2) (8 3))
+ ;;         ((7 4) (5 4) (1 2) (4 1) (6 5) (2 6) (3 2) (8 3))
+ ;;         ((7 1) (2 1) (5 1) (4 1) (3 3) (6 3) (1 3) (8 3))
+ ;;         ((3 4) (2 1) (7 2) (4 1) (6 3) (8 3) (1 5) (5 6))
+ ;;         ((3 4) (2 1) (7 2) (4 1) (5 5) (1 6) (8 3) (6 3))
+ ;;         ((2 5) (6 6) (7 2) (4 1) (3 4) (1 4) (5 2) (8 3))
+ ;;         (1 4) (3 4) (7 2) (4 1) (6 5) (2 6) (5 2) (8 3))
+ ;;         (6 4) (2 1) (1 2) (4 1) (5 4) (8 3) (3 2) (7 3))
+ ;;         (3 4) (2 1) (5 2) (4 1) (1 4) (8 3) (6 2) (7 3))
+ ;;         ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3))
+ ;;         ((2 5) (8 6) (3 1) (4 1) (1 5) (6 6) (5 3) (7 3))
+ ;;         ((6 5) (1 6) (3 1) (4 1) (8 5) (2 6) (5 3) (7 3))
+ ;;         ((7 4) (2 1) (1 2) (4 1) (8 4) (5 3) (3 2) (6 3))
+ ;;         ((3 4) (2 1) (8 2) (4 1) (1 4) (5 3) (7 2) (6 3))
+ ;;         ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3))
+ ;;         (2 5) (5 6) (3 1) (4 1) (1 5) (7 6) (8 3) (6 3))
+ ;;         ((7 5) (1 6) (3 1) (4 1) (5 5) (2 6) (8 3) (6 3))
+ ;;         ((1 5) (6 6) (2 5) (4 1) (7 4) (5 6) (3 2) (8 3))
+ ;;         ((3 4) (6 6) (7 2) (4 1) (2 5) (5 6) (1 5) (8 3))
+ ;;         ((2 5) (6 6) (3 1) (4 1) (5 4) (8 3) (1 2) (7 3))
+ ;;         ((2 5) (6 6) (3 1) (4 1) (7 3) (1 4) (8 3) (5 2))
+ ;;         ((6 1) (5 1) (3 1) (4 1) (2 3) (1 3) (7 3) (8 3))
+ ;;         ((6 5) (1 6) (5 5) (4 1) (7 4) (2 6) (3 2) (8 3))
+ ;;         ((3 4) (1 6) (7 2) (4 1) (5 5) (2 6) (6 5) (8 3))
+ ;;         ((5 5) (1 6) (3 1) (4 1) (2 4) (8 3) (6 2) (7 3))
+ ;;         ((5 5) (1 6) (3 1) (4 1) (7 3) (6 4) (8 3) (2 2))
+ ;;         ((6 1) (5 1) (3 1) (4 1) (2 3) (1 3) (7 3) (8 3)))
+ ;;         (("x" "x")
+ ;;         ("x" "y")
+ ;;         ("x" "Y")
+ ;;         ("x" "z")
+ ;;         ("x" "Z")
+ ;;         ("X" "X")
+ ;;         ("X" "y")
+ ;;         ("X" "Y")
+ ;;         ("X" "z")
+ ;;         ("X" "Z")
+ ;;         ("y" "x")
+ ;;         ("y" "X")
+ ;;         ("y" "y")
+ ;;         ("y" "z")
+ ;;         ("y" "Z")
+ ;;         ("Y" "x")
+ ;;         ("Y" "X")
+ ;;         ("Y" "Y")
+ ;;         ("Y" "z")
+ ;;         ("Y" "Z")
+ ;;         ("z" "x")
+ ;;         ("z" "X")
+ ;;         ("z" "y")
+ ;;         ("z" "Y")
+ ;;         ("z" "z")
+ ;;         ("Z" "x")
+ ;;         ("Z" "X")
+ ;;         ("Z" "y")
+ ;;         ("Z" "Y")
+ ;;         ("Z" "Z")))
+ ;;      )
+ ;;  "\n")
+ ;;
 
-
+;-----------------------------Optimised Version of Non-Optimised genStates (Not that fast)--------------------------
 ;finds all the states at a specific depth using generateOptimisedSuccessorStates
 (define (genStatesOptimisedTailRecursive n state moves)
      (if (= n 0)
         (list (list state) (list moves))
-        (OptimisedBuildListController (list state) (list moves) 0 n (list) (list))
+        (optimisedBuildListController (list state) (list moves) 0 n (list) (list))
      )
 )
 
  ; Creates a list of states and moves up to 'n' depth
-(define (OptimisedBuildListController stateList moveList currentIndex totalIndex buildUpList buildUpMove)
+ ; Helper function ofr genStatesOptimisedTailRecursive
+(define (optimisedBuildListController stateList moveList currentIndex totalIndex buildUpList buildUpMove)
     (if (= currentIndex totalIndex)
          (list stateList moveList)
          (cond
@@ -643,23 +764,37 @@
          )
     )
 )
+; optimisedBuildListController behaves correctly for n=1
+;; ;(print (equal? (optimisedBuildListController (list '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (list '()) 0 1 (list) (list))
+;; ; '((((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3))
+;; ;  ((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3))
+;; ;  ((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3))
+;; ;  ((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3))
+;; ;  ((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3))
+;; ;  ((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3)))
+;; ; (("x") ("X") ("y") ("Y") ("z") ("Z")))
+;; ;      )
+;; ;  "\n")
 
+
+
+ ; Populates a buildUpList and buildUpMove list at a single depth
+ ; Helper function for genStatesOptimisedTailRecursive
 (define (buildUpOptimised stateList moveList currentIndex totalIndex buildUpList buildUpMove)
     (define successorStates (generateOptimisedSuccessorStates (car stateList) (car moveList)))
-        (OptimisedBuildListController (cdr stateList) (cdr moveList) currentIndex totalIndex (append buildUpList (car successorStates)) (append buildUpMove (car (cdr successorStates))))
+        (optimisedBuildListController (cdr stateList) (cdr moveList) currentIndex totalIndex (append buildUpList (car successorStates)) (append buildUpMove (car (cdr successorStates))))
 )
+; Tests not provided for buildUpOptimised as genStatesOptimisedTailRecursive and optimisedBuildListController tests will ensure that buildUpOptimised is performing correctly 
 
-; Populates a buildUpList and buildUpMove list at a single depth
-
-
-;;  Behaves correctly for depth 0
-;;  (print (equal? (genStatesOptimised 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
+;   genStatesOptimisedTailRecursive Tests
+;   Behaves correctly for depth 0
+;;  (print (equal? (genStatesOptimisedTailRecursive 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
 ;;      '((((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (()))
 ;;      )
 ;;  "\n")
 ;;
-;;  Behaves correctly for depth 2
-;;  (print (equal? (genStatesOptimised 2 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
+;   Behaves correctly for depth 2
+;;  (print (equal? (genStatesOptimisedTailRecursive 2 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
 ;;      '((((7 1) (2 1) (5 1) (4 1) (3 3) (6 3) (1 3) (8 3))
 ;;         ((5 4) (2 1) (1 2) (4 1) (6 3) (8 3) (7 5) (3 6))
 ;;         ((5 4) (2 1) (1 2) (4 1) (3 5) (7 6) (8 3) (6 3))
@@ -724,9 +859,9 @@
 ;;  "\n")
 ;;
 
-
 ;---------------------------QUESTION 3.1-----------------------
 ;Solves a rubiks cube using breadth first search. Can solve up to roughly 7 moves.
+;Currently hardcoded to stop after 9 moves
 (define (solveCube solved initial n)
     (let ([statesList (genStatesOptimised n initial (list))])
         (let ([solution (listSearcher (car statesList) (car (cdr statesList))  solved)])
@@ -740,8 +875,12 @@
         )
     )
 )
+;; ; (print (equal? '("Z" "Y" "X") (solveCube solvedStates (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
+;; ; (print (equal? '("X") (solveCube solvedStates (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
+
 
 ; Searches provided stateList looking for a solvedState
+; Helper function for solveCube & solveCubeSafe
 (define (listSearcher stateList moveList solved)
     (if (or (null? stateList) (null? moveList))
         (list)
@@ -751,7 +890,11 @@
         )
     )
 )
+;; ;(print (equal? (listSearcher '(((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) '(("x")) solvedStates) '("x")) "\n")
+;; ;(print (equal? (listSearcher '(((1 3) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) '(("x","y") ("x")) solvedStates) '("x")) "\n")
 
+; Solves cube using the genStatesOptimisedTailRecursive flavour of genStates
+; Currently hardcoded to stop after 9 moves 
  (define (solveCubeSafe solved initial n)
      (let ([statesList (genStatesOptimisedTailRecursive n initial (list))])
          (let ([solution (listSearcher (car statesList) (car (cdr statesList))  solved)])
@@ -765,20 +908,7 @@
          )
      )
  )
+;; ;(print (equal? '("Z" "Y" "X") (solveCubeSafe solvedStates (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
+;; ;(print (equal? '("X") (solveCubeSafe solvedStates (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
 
- ; Searches provided stateList looking for a solvedState
- (define (listSearcherSafe stateList moveList solved)
-     (if (or (null? stateList) (null? moveList))
-         (list)
-         (if (boolean? (member (car stateList) solved))
-             (listSearcher (cdr stateList) (cdr moveList) solved)
-             (car moveList)
-         )
-     )
- )
-
-;---------------------------------------------------------------------
-;TESTS
-; (print (equal? '("Z" "Y" "X") (solveCube solvedStates (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
-; (print (equal? '("X") (solveCube solvedStates (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
 ;---------------------------------------------------------------------
