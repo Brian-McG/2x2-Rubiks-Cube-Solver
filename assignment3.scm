@@ -855,7 +855,7 @@
  ;;  "\n")
  ;;
 
-;-----------------------------Optimised Version of Non-Optimised genStates (Not that fast)--------------------------
+;-----------------------------Optimised Version of Non-Optimised genStatesTailRecursive (Not that fast)--------------------------
 ;finds all the states at a specific depth using generateOptimisedSuccessorStates
 (define (genStatesOptimisedTailRecursive n state moves)
      (if (= n 0)
@@ -1039,6 +1039,4 @@
 )
 ;; ;(print (equal? '("Z" "Y" "X") (solveCubeSlow solvedStates (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
 ;; ;(print (equal? '("X") (solveCubeSlow solvedStates (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
-
-
 ;---------------------------------------------------------------------
