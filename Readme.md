@@ -39,8 +39,8 @@ All the main functions include a trace to show that the function is tail recursi
 #### Theoretical Questions
 The theoretical questions are answered in *Theortical_Questions.pdf*. It also includes some additional comparisons and analysis based on the questions provided.
 
-#### Test System
-The code was written and run on Windows 8.1 x64 using the gambit interpreter. The code has been tested to run on the gambit interpreter on Ubuntu in the senior lab.
+#### Test System & Interpreter
+The code was written and run on Windows 8.1 x64 using the Gambit interpreter (v 4.7.4). The code has been tested to run on the gambit interpreter on Ubuntu in the senior lab.
 
 ----------
 
