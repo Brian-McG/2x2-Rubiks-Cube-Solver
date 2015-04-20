@@ -495,11 +495,124 @@
 ;; ; "\n")
 
 ;-----------------------------QUESTION 2.1--------------------------
+;----------------Non Tail Recursive Non-Optimised (medium speed)------------
+; This method is NOT tail recursive by design!
+; In trying to get the fastest solution, this way of doing it resulted in much much faster results (the theoretical questions has a comparision for n=7) at the expense of bit more memory usage
+; Second solution obtained
+(define (genStates n state moves)
+     (cond
+         [(<= n 0) (list (list state) (list moves))]
+         [(= n 1) (generateSuccessorStates state moves)]
+         [(> n 1)
+             (let ((successorStatesSolns (generateSuccessorStates state moves)))
+                 (let ((newStates (car successorStatesSolns)) (newMoves (car (cdr successorStatesSolns))))
+                         (let
+                             (
+                                 (nextxSolution (genStates (- n 1) (list-ref newStates 0) (list-ref newMoves 0)))
+                                 (nextXSolution (genStates (- n 1) (list-ref newStates 1) (list-ref newMoves 1)))
+                                 (nextySolution (genStates (- n 1) (list-ref newStates 2) (list-ref newMoves 2)))
+                                 (nextYSolution (genStates (- n 1) (list-ref newStates 3) (list-ref newMoves 3)))
+                                 (nextzSolution (genStates (- n 1) (list-ref newStates 4) (list-ref newMoves 4)))
+                                 (nextZSolution (genStates (- n 1) (list-ref newStates 5) (list-ref newMoves 5)))
+                             )
+                             (list
+                                 (append '() (car nextxSolution) (car nextXSolution) (car nextySolution) (car nextYSolution) (car nextzSolution) (car nextZSolution))
+                                 (append '() (car (cdr nextxSolution)) (car (cdr nextXSolution)) (car (cdr nextySolution)) (car (cdr nextYSolution)) (car (cdr nextzSolution)) (car (cdr nextZSolution)))
+                             )
+                         )
+                     )
+               )
+
+         ]
+     )
+ )
+;; ;  Behaves correctly for depth 0
+ ;; ;  (print (equal? (genStates 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
+ ;; ;      '((((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (()))
+ ;; ;      )
+ ;; ;  "\n")
+ ;; ;
+;  Behaves correctly for depth 2
+ ;; ;  (print (equal? (genStates 2 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
+ ;; ;      '((((7 1) (2 1) (5 1) (4 1) (3 3) (6 3) (1 3) (8 3))
+ ;; ;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+ ;; ;         ((5 4) (2 1) (1 2) (4 1) (6 3) (8 3) (7 5) (3 6))
+ ;; ;         ((5 4) (2 1) (1 2) (4 1) (3 5) (7 6) (8 3) (6 3))
+ ;; ;         ((2 5) (6 6) (1 2) (4 1) (5 4) (7 4) (3 2) (8 3))
+ ;; ;         ((7 4) (5 4) (1 2) (4 1) (6 5) (2 6) (3 2) (8 3))
+ ;; ;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+ ;; ;         ((7 1) (2 1) (5 1) (4 1) (3 3) (6 3) (1 3) (8 3))
+ ;; ;         ((3 4) (2 1) (7 2) (4 1) (6 3) (8 3) (1 5) (5 6))
+ ;; ;         ((3 4) (2 1) (7 2) (4 1) (5 5) (1 6) (8 3) (6 3))
+ ;; ;         ((2 5) (6 6) (7 2) (4 1) (3 4) (1 4) (5 2) (8 3))
+ ;; ;         ((1 4) (3 4) (7 2) (4 1) (6 5) (2 6) (5 2) (8 3))
+ ;; ;         ((6 4) (2 1) (1 2) (4 1) (5 4) (8 3) (3 2) (7 3))
+ ;; ;         ((3 4) (2 1) (5 2) (4 1) (1 4) (8 3) (6 2) (7 3))
+ ;; ;         ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3))
+ ;; ;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+ ;; ;         ((2 5) (8 6) (3 1) (4 1) (1 5) (6 6) (5 3) (7 3))
+ ;; ;         ((6 5) (1 6) (3 1) (4 1) (8 5) (2 6) (5 3) (7 3))
+ ;; ;         ((7 4) (2 1) (1 2) (4 1) (8 4) (5 3) (3 2) (6 3))
+ ;; ;         ((3 4) (2 1) (8 2) (4 1) (1 4) (5 3) (7 2) (6 3))
+ ;; ;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+ ;; ;         ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3))
+ ;; ;         ((2 5) (5 6) (3 1) (4 1) (1 5) (7 6) (8 3) (6 3))
+ ;; ;         ((7 5) (1 6) (3 1) (4 1) (5 5) (2 6) (8 3) (6 3))
+ ;; ;         ((1 5) (6 6) (2 5) (4 1) (7 4) (5 6) (3 2) (8 3))
+ ;; ;         ((3 4) (6 6) (7 2) (4 1) (2 5) (5 6) (1 5) (8 3))
+ ;; ;         ((2 5) (6 6) (3 1) (4 1) (5 4) (8 3) (1 2) (7 3))
+ ;; ;         ((2 5) (6 6) (3 1) (4 1) (7 3) (1 4) (8 3) (5 2))
+ ;; ;         ((6 1) (5 1) (3 1) (4 1) (2 3) (1 3) (7 3) (8 3))
+ ;; ;        ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+ ;; ;        ((6 5) (1 6) (5 5) (4 1) (7 4) (2 6) (3 2) (8 3))
+ ;; ;        ((3 4) (1 6) (7 2) (4 1) (5 5) (2 6) (6 5) (8 3))
+ ;; ;        ((5 5) (1 6) (3 1) (4 1) (2 4) (8 3) (6 2) (7 3))
+ ;; ;        ((5 5) (1 6) (3 1) (4 1) (7 3) (6 4) (8 3) (2 2))
+ ;; ;        ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+ ;; ;        ((6 1) (5 1) (3 1) (4 1) (2 3) (1 3) (7 3) (8 3)))
+ ;; ;        (("x" "x")
+ ;; ;         ("x" "X")
+ ;; ;         ("x" "y")
+ ;; ;         ("x" "Y")
+ ;; ;         ("x" "z")
+ ;; ;         ("x" "Z")
+ ;; ;         ("X" "x")
+ ;; ;         ("X" "X")
+ ;; ;         ("X" "y")
+ ;; ;         ("X" "Y")
+ ;; ;         ("X" "z")
+ ;; ;         ("X" "Z")
+ ;; ;         ("y" "x")
+ ;; ;         ("y" "X")
+ ;; ;         ("y" "y")
+ ;; ;         ("y" "Y")
+ ;; ;         ("y" "z")
+ ;; ;         ("y" "Z")
+ ;; ;         ("Y" "x")
+ ;; ;         ("Y" "X")
+ ;; ;         ("Y" "y")
+ ;; ;         ("Y" "Y")
+ ;; ;         ("Y" "z")
+ ;; ;         ("z" "x")
+ ;; ;         ("z" "X")
+ ;; ;         ("z" "y")
+ ;; ;         ("z" "Y")
+ ;; ;         ("z" "z")
+ ;; ;         ("z" "Z")
+ ;; ;         ("Z" "x")
+ ;; ;         ("Z" "X")
+ ;; ;         ("Z" "y")
+ ;; ;         ("Z" "Y")
+ ;; ;         ("Z" "z")
+ ;; ;         ("Z" "Z")))
+ ;; ;     )
+ ;; ; "\n")
 
 ;-----------------------------Non-Optimised (slow)--------------------------
 ; finds all the states at a specific depth
 ; Non-Optimised, tail recursive genStates method
-(define (genStates n state moves)
+; This was the initial solution but had a high completion time
+(define (genStatesTailRecursive n state moves)
     (if (= n 0)
         (list (list state) (list moves))
         (buildListController (list state) (list moves) 0 n (list) (list))
@@ -542,13 +655,13 @@
 
 ;  genStates Tests
 ;; ;  Behaves correctly for depth 0
-;; ;  (print (equal? (genStates 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
+;; ;  (print (equal? (genStatesTailRecursive 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
 ;; ;      '((((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (()))
 ;; ;      )
 ;; ;  "\n")
 ;; ;
 ;  Behaves correctly for depth 2
-;; ;  (print (equal? (genStates 2 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
+;; ;  (print (equal? (genStatesTailRecursive 2 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
 ;; ;      '((((7 1) (2 1) (5 1) (4 1) (3 3) (6 3) (1 3) (8 3))
 ;; ;         ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
 ;; ;         ((5 4) (2 1) (1 2) (4 1) (6 3) (8 3) (7 5) (3 6))
@@ -624,7 +737,7 @@
 ;; ;     )
 ;; ; "\n")
 
-;-----------------------------Ground up optimised genStates (fastest)--------------------------
+;-----------------------------Optimised genStates (fastest)--------------------------
 ; This method is NOT tail recursive by design!
 ; In trying to get the fastest solution, this way of doing it resulted in much much faster results (the theoretical questions has a comparision for n=7) at the expense of bit more memory usage
 (define (genStatesOptimised n state moves)
@@ -912,7 +1025,7 @@
 ;; ;(print (equal? '("X") (solveCubeSafe solvedStates (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
 
 (define (solveCubeSlow solved initial n)
-    (let ([statesList (genStates n initial (list))])
+    (let ([statesList (genStatesTailRecursive n initial (list))])
         (let ([solution (listSearcher (car statesList) (car (cdr statesList))  solved)])
             (if (null? solution)
                 (if (= n 9)
