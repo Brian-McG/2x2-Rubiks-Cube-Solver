@@ -508,16 +508,16 @@
                  (let ((newStates (car successorStatesSolns)) (newMoves (car (cdr successorStatesSolns))))
                          (let
                              (
-                                 (nextxSolution (genStates (- n 1) (list-ref newStates 0) (list-ref newMoves 0)))
-                                 (nextXSolution (genStates (- n 1) (list-ref newStates 1) (list-ref newMoves 1)))
-                                 (nextySolution (genStates (- n 1) (list-ref newStates 2) (list-ref newMoves 2)))
-                                 (nextYSolution (genStates (- n 1) (list-ref newStates 3) (list-ref newMoves 3)))
-                                 (nextzSolution (genStates (- n 1) (list-ref newStates 4) (list-ref newMoves 4)))
-                                 (nextZSolution (genStates (- n 1) (list-ref newStates 5) (list-ref newMoves 5)))
+                                 (sol1 (genStates (- n 1) (list-ref newStates 0) (list-ref newMoves 0)))
+                                 (sol2 (genStates (- n 1) (list-ref newStates 1) (list-ref newMoves 1)))
+                                 (sol3 (genStates (- n 1) (list-ref newStates 2) (list-ref newMoves 2)))
+                                 (sol4 (genStates (- n 1) (list-ref newStates 3) (list-ref newMoves 3)))
+                                 (sol5 (genStates (- n 1) (list-ref newStates 4) (list-ref newMoves 4)))
+                                 (sol6 (genStates (- n 1) (list-ref newStates 5) (list-ref newMoves 5)))
                              )
                              (list
-                                 (append '() (car nextxSolution) (car nextXSolution) (car nextySolution) (car nextYSolution) (car nextzSolution) (car nextZSolution))
-                                 (append '() (car (cdr nextxSolution)) (car (cdr nextXSolution)) (car (cdr nextySolution)) (car (cdr nextYSolution)) (car (cdr nextzSolution)) (car (cdr nextZSolution)))
+                                 (append (car sol1) (car sol2) (car sol3) (car sol4) (car sol5) (car sol6))
+                                 (append (car (cdr sol1)) (car (cdr sol2)) (car (cdr sol3)) (car (cdr sol4)) (car (cdr sol5)) (car (cdr sol6)))
                              )
                          )
                      )
@@ -646,14 +646,14 @@
 
 
 ; Populates a buildUpList and buildUpMove list at a single depth
-; Helper function of genStates
+; Helper function of genStatesTailRecursive
 (define (buildUp stateList moveList currentIndex totalIndex buildUpList buildUpMove)
     (define successorStates (generateSuccessorStates (car stateList) (car moveList)))
         (buildListController (cdr stateList) (cdr moveList) currentIndex totalIndex (append buildUpList (car successorStates)) (append buildUpMove (car (cdr successorStates))))
 )
-; Tests not provided for buildUp as genStates and buildListController tests will ensure that buildUp is performing correctly
+; Tests not provided for buildUp as genStatesTailRecursive and buildListController tests will ensure that buildUp is performing correctly
 
-;  genStates Tests
+;  genStatesTailRecursive Tests
 ;; ;  Behaves correctly for depth 0
 ;; ;  (print (equal? (genStatesTailRecursive 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
 ;; ;      '((((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (()))
@@ -750,17 +750,17 @@
                     (if (= (length newStates) 6)
                         (let 
                             (
-                                (nextxSolution (genStatesOptimised (- n 1) (list-ref newStates 0) (list-ref newMoves 0)))
-                                (nextXSolution (genStatesOptimised (- n 1) (list-ref newStates 1) (list-ref newMoves 1)))
-                                (nextySolution (genStatesOptimised (- n 1) (list-ref newStates 2) (list-ref newMoves 2)))
-                                (nextYSolution (genStatesOptimised (- n 1) (list-ref newStates 3) (list-ref newMoves 3)))
-                                (nextzSolution (genStatesOptimised (- n 1) (list-ref newStates 4) (list-ref newMoves 4)))
-                                (nextZSolution (genStatesOptimised (- n 1) (list-ref newStates 5) (list-ref newMoves 5)))
-                            )
-                            (list
-                                (append '() (car nextxSolution) (car nextXSolution) (car nextySolution) (car nextYSolution) (car nextzSolution) (car nextZSolution))
-                                (append '() (car (cdr nextxSolution)) (car (cdr nextXSolution)) (car (cdr nextySolution)) (car (cdr nextYSolution)) (car (cdr nextzSolution)) (car (cdr nextZSolution)))
-                            )
+                                 (sol1 (genStatesOptimised (- n 1) (list-ref newStates 0) (list-ref newMoves 0)))
+                                 (sol2 (genStatesOptimised (- n 1) (list-ref newStates 1) (list-ref newMoves 1)))
+                                 (sol3 (genStatesOptimised (- n 1) (list-ref newStates 2) (list-ref newMoves 2)))
+                                 (sol4 (genStatesOptimised (- n 1) (list-ref newStates 3) (list-ref newMoves 3)))
+                                 (sol5 (genStatesOptimised (- n 1) (list-ref newStates 4) (list-ref newMoves 4)))
+                                 (sol6 (genStatesOptimised (- n 1) (list-ref newStates 5) (list-ref newMoves 5)))
+                             )
+                             (list
+                                 (append (car sol1) (car sol2) (car sol3) (car sol4) (car sol5) (car sol6))
+                                 (append (car (cdr sol1)) (car (cdr sol2)) (car (cdr sol3)) (car (cdr sol4)) (car (cdr sol5)) (car (cdr sol6)))
+                             )
                         )
                         (let
                              (
@@ -771,8 +771,8 @@
                                  (sol5 (genStatesOptimised (- n 1) (list-ref newStates 4) (list-ref newMoves 4)))
                              )
                              (list
-                                 (append '() (car sol1) (car sol2) (car sol3) (car sol4) (car sol5))
-                                 (append '() (car (cdr sol1)) (car (cdr sol2)) (car (cdr sol3)) (car (cdr sol4)) (car (cdr sol5)))
+                                 (append (car sol1) (car sol2) (car sol3) (car sol4) (car sol5))
+                                 (append (car (cdr sol1)) (car (cdr sol2)) (car (cdr sol3)) (car (cdr sol4)) (car (cdr sol5)))
                              )
                          )
                     )
