@@ -500,37 +500,44 @@
 ; In trying to get the fastest solution, this way of doing it resulted in much much faster results (the theoretical questions has a comparision for n=7) at the expense of bit more memory usage
 ; Second solution obtained
 (define (genStates n state moves)
-     (cond
-         [(<= n 0) (list (list state) (list moves))]
-         [(= n 1) (generateSuccessorStates state moves)]
-         [(> n 1)
-             (let ((successorStatesSolns (generateSuccessorStates state moves)))
-                 (let ((newStates (car successorStatesSolns)) (newMoves (car (cdr successorStatesSolns))))
-                         (let
-                             (
-                                 (sol1 (genStates (- n 1) (list-ref newStates 0) (list-ref newMoves 0)))
-                                 (sol2 (genStates (- n 1) (list-ref newStates 1) (list-ref newMoves 1)))
-                                 (sol3 (genStates (- n 1) (list-ref newStates 2) (list-ref newMoves 2)))
-                                 (sol4 (genStates (- n 1) (list-ref newStates 3) (list-ref newMoves 3)))
-                                 (sol5 (genStates (- n 1) (list-ref newStates 4) (list-ref newMoves 4)))
-                                 (sol6 (genStates (- n 1) (list-ref newStates 5) (list-ref newMoves 5)))
-                             )
-                             (list
-                                 (append (car sol1) (car sol2) (car sol3) (car sol4) (car sol5) (car sol6))
-                                 (append (car (cdr sol1)) (car (cdr sol2)) (car (cdr sol3)) (car (cdr sol4)) (car (cdr sol5)) (car (cdr sol6)))
-                             )
-                         )
-                     )
+   (cond
+      [(<= n 0) (list (list state) (list moves))]
+      [(= n 1) (generateSuccessorStates state moves)]
+      [(> n 1)
+         (let
+			   (
+				   (successorStatesAndMoves (generateSuccessorStates state moves))
+				)
+            (let
+				   (
+						(successorStates (car successorStatesAndMoves)) 
+						(successorMoves (car (cdr successorStatesAndMoves)))
+				   )
+               (let
+                  (
+                     (sol1 (genStates (- n 1) (list-ref successorStates 0) (list-ref successorMoves 0)))
+                     (sol2 (genStates (- n 1) (list-ref successorStates 1) (list-ref successorMoves 1)))
+                     (sol3 (genStates (- n 1) (list-ref successorStates 2) (list-ref successorMoves 2)))
+                     (sol4 (genStates (- n 1) (list-ref successorStates 3) (list-ref successorMoves 3)))
+                     (sol5 (genStates (- n 1) (list-ref successorStates 4) (list-ref successorMoves 4)))
+                     (sol6 (genStates (- n 1) (list-ref successorStates 5) (list-ref successorMoves 5)))
+                  )
+                  (list
+                     (append (car sol1) (car sol2) (car sol3) (car sol4) (car sol5) (car sol6))
+                     (append (car (cdr sol1)) (car (cdr sol2)) (car (cdr sol3)) (car (cdr sol4)) (car (cdr sol5)) (car (cdr sol6)))
+                  )
                )
+            )
+         )
 
-         ]
-     )
- )
+      ]
+   )
+)
 ;; ;  Behaves correctly for depth 0
- ;; ;  (print (equal? (genStates 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
- ;; ;      '((((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (()))
- ;; ;      )
- ;; ;  "\n")
+;; ;   (print (equal? (genStates 0 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
+;; ;      '((((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (()))
+;; ;       )
+;; ;   "\n")
  ;; ;
 ;  Behaves correctly for depth 2
  ;; ;  (print (equal? (genStates 2 '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
@@ -593,6 +600,7 @@
  ;; ;         ("Y" "y")
  ;; ;         ("Y" "Y")
  ;; ;         ("Y" "z")
+ ;; ;         ("Y" "Z")
  ;; ;         ("z" "x")
  ;; ;         ("z" "X")
  ;; ;         ("z" "y")
@@ -626,7 +634,7 @@
          (list stateList moveList)
          (cond
             [(null? stateList)
-				(buildListController buildUpList buildUpMove (+ currentIndex 1) totalIndex (list) (list))
+				   (buildListController buildUpList buildUpMove (+ currentIndex 1) totalIndex (list) (list))
             ]
             [else (buildUp stateList moveList currentIndex totalIndex buildUpList buildUpMove)]
          )
@@ -648,8 +656,12 @@
 ; Populates a buildUpList and buildUpMove list at a single depth
 ; Helper function of genStatesTailRecursive
 (define (buildUp stateList moveList currentIndex totalIndex buildUpList buildUpMove)
-    (define successorStates (generateSuccessorStates (car stateList) (car moveList)))
-        (buildListController (cdr stateList) (cdr moveList) currentIndex totalIndex (append buildUpList (car successorStates)) (append buildUpMove (car (cdr successorStates))))
+   (let 
+      (
+         (successorStates (generateSuccessorStates (car stateList) (car moveList)))
+      )
+      (buildListController (cdr stateList) (cdr moveList) currentIndex totalIndex (append buildUpList (car successorStates)) (append buildUpMove (car (cdr successorStates))))
+   )
 )
 ; Tests not provided for buildUp as genStatesTailRecursive and buildListController tests will ensure that buildUp is performing correctly
 
@@ -741,46 +753,53 @@
 ; This method is NOT tail recursive by design!
 ; In trying to get the fastest solution, this way of doing it resulted in much much faster results (the theoretical questions has a comparision for n=7) at the expense of bit more memory usage
 (define (genStatesOptimised n state moves)
-    (cond
-        [(<= n 0) (list (list state) (list moves))]
-        [(= n 1) (generateOptimisedSuccessorStates state moves)]
-        [(> n 1)
-            (let ((successorStatesSolns (generateOptimisedSuccessorStates state moves)))
-                (let ((newStates (car successorStatesSolns)) (newMoves (car (cdr successorStatesSolns))))
-                    (if (= (length newStates) 6)
-                        (let 
-                            (
-                                 (sol1 (genStatesOptimised (- n 1) (list-ref newStates 0) (list-ref newMoves 0)))
-                                 (sol2 (genStatesOptimised (- n 1) (list-ref newStates 1) (list-ref newMoves 1)))
-                                 (sol3 (genStatesOptimised (- n 1) (list-ref newStates 2) (list-ref newMoves 2)))
-                                 (sol4 (genStatesOptimised (- n 1) (list-ref newStates 3) (list-ref newMoves 3)))
-                                 (sol5 (genStatesOptimised (- n 1) (list-ref newStates 4) (list-ref newMoves 4)))
-                                 (sol6 (genStatesOptimised (- n 1) (list-ref newStates 5) (list-ref newMoves 5)))
-                             )
-                             (list
-                                 (append (car sol1) (car sol2) (car sol3) (car sol4) (car sol5) (car sol6))
-                                 (append (car (cdr sol1)) (car (cdr sol2)) (car (cdr sol3)) (car (cdr sol4)) (car (cdr sol5)) (car (cdr sol6)))
-                             )
-                        )
-                        (let
-                             (
-                                 (sol1 (genStatesOptimised (- n 1) (list-ref newStates 0) (list-ref newMoves 0)))
-                                 (sol2 (genStatesOptimised (- n 1) (list-ref newStates 1) (list-ref newMoves 1)))
-                                 (sol3 (genStatesOptimised (- n 1) (list-ref newStates 2) (list-ref newMoves 2)))
-                                 (sol4 (genStatesOptimised (- n 1) (list-ref newStates 3) (list-ref newMoves 3)))
-                                 (sol5 (genStatesOptimised (- n 1) (list-ref newStates 4) (list-ref newMoves 4)))
-                             )
-                             (list
-                                 (append (car sol1) (car sol2) (car sol3) (car sol4) (car sol5))
-                                 (append (car (cdr sol1)) (car (cdr sol2)) (car (cdr sol3)) (car (cdr sol4)) (car (cdr sol5)))
-                             )
-                         )
-                    )
-                )
-            )  
+   (cond
+      [(<= n 0) (list (list state) (list moves))]
+      [(= n 1) (generateOptimisedSuccessorStates state moves)]
+      [(> n 1)
+         (let 
+            (
+               (successorStatesAndMoves (generateOptimisedSuccessorStates state moves))
+            )
+            (let
+               (
+                  (successorStates (car successorStatesAndMoves)) 
+				  (successorMoves (car (cdr successorStatesAndMoves)))
+               )
+               (if (= (length successorStates) 6)
+                  (let 
+                     (
+                        (sol1 (genStatesOptimised (- n 1) (list-ref successorStates 0) (list-ref successorMoves 0)))
+                        (sol2 (genStatesOptimised (- n 1) (list-ref successorStates 1) (list-ref successorMoves 1)))
+                        (sol3 (genStatesOptimised (- n 1) (list-ref successorStates 2) (list-ref successorMoves 2)))
+                        (sol4 (genStatesOptimised (- n 1) (list-ref successorStates 3) (list-ref successorMoves 3)))
+                        (sol5 (genStatesOptimised (- n 1) (list-ref successorStates 4) (list-ref successorMoves 4)))
+                        (sol6 (genStatesOptimised (- n 1) (list-ref successorStates 5) (list-ref successorMoves 5)))
+                     )
+                     (list
+                        (append (car sol1) (car sol2) (car sol3) (car sol4) (car sol5) (car sol6))
+                        (append (car (cdr sol1)) (car (cdr sol2)) (car (cdr sol3)) (car (cdr sol4)) (car (cdr sol5)) (car (cdr sol6)))
+                     )
+                  )
+                  (let
+                     (
+                        (sol1 (genStatesOptimised (- n 1) (list-ref successorStates 0) (list-ref successorMoves 0)))
+                        (sol2 (genStatesOptimised (- n 1) (list-ref successorStates 1) (list-ref successorMoves 1)))
+                        (sol3 (genStatesOptimised (- n 1) (list-ref successorStates 2) (list-ref successorMoves 2)))
+                        (sol4 (genStatesOptimised (- n 1) (list-ref successorStates 3) (list-ref successorMoves 3)))
+                        (sol5 (genStatesOptimised (- n 1) (list-ref successorStates 4) (list-ref successorMoves 4)))
+                     )
+                     (list
+                        (append (car sol1) (car sol2) (car sol3) (car sol4) (car sol5))
+                        (append (car (cdr sol1)) (car (cdr sol2)) (car (cdr sol3)) (car (cdr sol4)) (car (cdr sol5)))
+                     )
+                  )
+               )
+            )
+         )  
         
-        ]
-    )
+      ]
+   )
 )
  ; genStatesOptimised Tests
  ;  Behaves correctly for depth 0
@@ -800,16 +819,16 @@
  ;;         ((3 4) (2 1) (7 2) (4 1) (6 3) (8 3) (1 5) (5 6))
  ;;         ((3 4) (2 1) (7 2) (4 1) (5 5) (1 6) (8 3) (6 3))
  ;;         ((2 5) (6 6) (7 2) (4 1) (3 4) (1 4) (5 2) (8 3))
- ;;         (1 4) (3 4) (7 2) (4 1) (6 5) (2 6) (5 2) (8 3))
- ;;         (6 4) (2 1) (1 2) (4 1) (5 4) (8 3) (3 2) (7 3))
- ;;         (3 4) (2 1) (5 2) (4 1) (1 4) (8 3) (6 2) (7 3))
+ ;;         ((1 4) (3 4) (7 2) (4 1) (6 5) (2 6) (5 2) (8 3))
+ ;;         ((6 4) (2 1) (1 2) (4 1) (5 4) (8 3) (3 2) (7 3))
+ ;;         ((3 4) (2 1) (5 2) (4 1) (1 4) (8 3) (6 2) (7 3))
  ;;         ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3))
  ;;         ((2 5) (8 6) (3 1) (4 1) (1 5) (6 6) (5 3) (7 3))
  ;;         ((6 5) (1 6) (3 1) (4 1) (8 5) (2 6) (5 3) (7 3))
  ;;         ((7 4) (2 1) (1 2) (4 1) (8 4) (5 3) (3 2) (6 3))
  ;;         ((3 4) (2 1) (8 2) (4 1) (1 4) (5 3) (7 2) (6 3))
  ;;         ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3))
- ;;         (2 5) (5 6) (3 1) (4 1) (1 5) (7 6) (8 3) (6 3))
+ ;;         ((2 5) (5 6) (3 1) (4 1) (1 5) (7 6) (8 3) (6 3))
  ;;         ((7 5) (1 6) (3 1) (4 1) (5 5) (2 6) (8 3) (6 3))
  ;;         ((1 5) (6 6) (2 5) (4 1) (7 4) (5 6) (3 2) (8 3))
  ;;         ((3 4) (6 6) (7 2) (4 1) (2 5) (5 6) (1 5) (8 3))
@@ -894,8 +913,12 @@
  ; Populates a buildUpList and buildUpMove list at a single depth
  ; Helper function for genStatesOptimisedTailRecursive
 (define (buildUpOptimised stateList moveList currentIndex totalIndex buildUpList buildUpMove)
-    (define successorStates (generateOptimisedSuccessorStates (car stateList) (car moveList)))
-        (optimisedBuildListController (cdr stateList) (cdr moveList) currentIndex totalIndex (append buildUpList (car successorStates)) (append buildUpMove (car (cdr successorStates))))
+   (let
+      (
+         (successorStates (generateOptimisedSuccessorStates (car stateList) (car moveList)))
+      )
+      (optimisedBuildListController (cdr stateList) (cdr moveList) currentIndex totalIndex (append buildUpList (car successorStates)) (append buildUpMove (car (cdr successorStates))))
+   )
 )
 ; Tests not provided for buildUpOptimised as genStatesOptimisedTailRecursive and optimisedBuildListController tests will ensure that buildUpOptimised is performing correctly 
 
@@ -917,16 +940,16 @@
 ;;         ((3 4) (2 1) (7 2) (4 1) (6 3) (8 3) (1 5) (5 6))
 ;;         ((3 4) (2 1) (7 2) (4 1) (5 5) (1 6) (8 3) (6 3))
 ;;         ((2 5) (6 6) (7 2) (4 1) (3 4) (1 4) (5 2) (8 3))
-;;         (1 4) (3 4) (7 2) (4 1) (6 5) (2 6) (5 2) (8 3))
-;;         (6 4) (2 1) (1 2) (4 1) (5 4) (8 3) (3 2) (7 3))
-;;         (3 4) (2 1) (5 2) (4 1) (1 4) (8 3) (6 2) (7 3))
+;;         ((1 4) (3 4) (7 2) (4 1) (6 5) (2 6) (5 2) (8 3))
+;;         ((6 4) (2 1) (1 2) (4 1) (5 4) (8 3) (3 2) (7 3))
+;;         ((3 4) (2 1) (5 2) (4 1) (1 4) (8 3) (6 2) (7 3))
 ;;         ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3))
 ;;         ((2 5) (8 6) (3 1) (4 1) (1 5) (6 6) (5 3) (7 3))
 ;;         ((6 5) (1 6) (3 1) (4 1) (8 5) (2 6) (5 3) (7 3))
 ;;         ((7 4) (2 1) (1 2) (4 1) (8 4) (5 3) (3 2) (6 3))
 ;;         ((3 4) (2 1) (8 2) (4 1) (1 4) (5 3) (7 2) (6 3))
 ;;         ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3))
-;;         (2 5) (5 6) (3 1) (4 1) (1 5) (7 6) (8 3) (6 3))
+;;         ((2 5) (5 6) (3 1) (4 1) (1 5) (7 6) (8 3) (6 3))
 ;;         ((7 5) (1 6) (3 1) (4 1) (5 5) (2 6) (8 3) (6 3))
 ;;         ((1 5) (6 6) (2 5) (4 1) (7 4) (5 6) (3 2) (8 3))
 ;;         ((3 4) (6 6) (7 2) (4 1) (2 5) (5 6) (1 5) (8 3))
