@@ -38,33 +38,3 @@ All the main functions include a trace to show that the function is tail recursi
 
 #### Theoretical Questions
 The theoretical questions are answered in *Theortical_Questions.pdf*. It also includes some additional comparisons and analysis based on the questions provided.
-
-#### Test System & Interpreter
-The code was written and run on Windows 8.1 x64 using the Gambit interpreter (v 4.7.4). The code has been tested to run on the gambit interpreter on Ubuntu in the senior lab.
-
-----------
-
-### Files provided
-- assignment3.scm
-- Theoretical_Questions.pdf
-- Readme.md
-- Readme.pdf
-- Theoretical_Questions.tex
-- trace_output
-  -  rotate.out
-  - generateSuccessor.out
-  - generateOptimisedSuccessor.out
-  - genStates.out
-  - genStatesOptimised.out
-  - genStatesTailRecursive.out
-  - genStatesOptimisedTailRecursive.out
-  - solveCube.out
-  - solveCubeSafe.out
-  - solveCubeSlow.out
-- memory_usage.jpg
-- mem_usage2.jpg
-- mem_usage3.jpg
-- theory_data.dat
-- theory_data_optimised.dat
-- theory_data.xlsx
-- .gitignore
